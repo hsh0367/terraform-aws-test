@@ -12,26 +12,15 @@ resource "aws_s3_bucket" "new_bucket" {
   }
 }
 
-# Todo: 버킷 acl 구성 및 정책 추가
-# Todo: 태그로 연결된 iam user 생성 및 지정된 정책 arn 연결
+# 버킷에 대한 public access block 구성을 변경해준다.
+resource "aws_s3_bucket_public_access_block" "public-access" {
+  bucket = aws_s3_bucket.new_bucket.id
+  block_public_acls = false
+  ignore_public_acls = false
+  block_public_policy = true
+  restrict_public_buckets = true
+}
 
-# # 버킷에 대한 public access block 구성을 변경해준다.
-# resource "aws_s3_bucket_public_access_block" "public-access" {
-#   bucket = aws_s3_bucket.new_bucket.id
-#   block_public_acls = false
-#   block_public_policy = false
-#   ignore_public_acls = false
-#   restrict_public_buckets = false
-# }
-
-
-# resource "aws_s3_bucket_policy" "bucket-policy" {
-#   bucket = aws_s3_bucket.new_bucket.id
-#   depends_on = [ 
-#     aws_s3_bucket_public_access_block.public-access
-#   ]
-#   policy = var.bucket_policy
-# }
 
 
 resource "aws_s3_bucket_cors_configuration" "bucket_cors" {
